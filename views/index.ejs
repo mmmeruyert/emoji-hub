@@ -1,59 +1,34 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emoji Hub</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .nav {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
-        }
-        .nav a:hover {
-            text-decoration: underline;
-        }
-        .welcome {
-            text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-    </style>
+    <title>Emoji Hub - Discover Perfect Emojis</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <div class="header">
-        <h1>🎭 Emoji Hub</h1>
-        <p>Your one-stop destination for emojis!</p>
-    </div>
-    
-    <div class="nav">
-        <a href="/">Home</a>
-        <a href="/catalog">Emoji Catalog</a>
-    </div>
-    
-    <div class="welcome">
-        <h2>Welcome to Emoji Hub! 🎉</h2>
-        <p>Discover and explore thousands of emojis organized by categories.</p>
-        <p>Use our catalog to browse emojis or search for specific ones.</p>
-    </div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">🎭 Emoji Hub</a>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/catalog" class="nav-link">Catalog</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title">Discover the Perfect Emoji</h1>
+            <p class="hero-subtitle">Search, copy, and use thousands of emojis instantly</p>
+            <a href="/catalog" class="cta-btn">Explore Emojis 🚀</a>
+        </div>
+        <div class="floating-emojis">
+            <span class="float-1">🎉</span>
+            <span class="float-2">✨</span>
+            <span class="float-3">🎨</span>
+            <span class="float-4">🚀</span>
+        </div>
+    </main>
 </body>
 </html>
