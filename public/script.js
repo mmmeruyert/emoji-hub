@@ -87,8 +87,17 @@ function displayEmojis(emojis) {
     emojis.slice(0, 100).forEach(emoji => {
         const card = document.createElement('div');
         card.className = 'emoji-card';
+        
+        // Convert HTML entity codes to actual emoji characters for display
+        let displayEmoji = '🤔';
+        if (emoji.htmlCode && emoji.htmlCode.length > 0) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = emoji.htmlCode.join('');
+            displayEmoji = tempDiv.textContent || tempDiv.innerText || '🤔';
+        }
+        
         card.innerHTML = `
-            <div class="emoji">${emoji.htmlCode ? emoji.htmlCode.join('') : '🤔'}</div>
+            <div class="emoji">${displayEmoji}</div>
             <div class="emoji-name">${emoji.name}</div>
             <div class="emoji-category">${emoji.category}</div>
         `;
@@ -101,7 +110,16 @@ function displayEmojis(emojis) {
 }
 
 function copyEmoji(emoji) {
-    const emojiText = emoji.htmlCode ? emoji.htmlCode.join('') : '🤔';
+    // Convert HTML entity codes to actual emoji characters
+    let emojiText = '🤔'; // fallback emoji
+    
+    if (emoji.htmlCode && emoji.htmlCode.length > 0) {
+        // Convert HTML entities like &#127817; to actual emoji
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = emoji.htmlCode.join('');
+        emojiText = tempDiv.textContent || tempDiv.innerText || '🤔';
+    }
+    
     navigator.clipboard.writeText(emojiText).then(() => {
         showCopyNotification(emojiText);
     }).catch(err => {
