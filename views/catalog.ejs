@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Catalog - Emoji Hub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .nav {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .search-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .emoji-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .emoji-card:hover {
+            transform: translateY(-2px);
+        }
+        .emoji {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .emoji-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .emoji-category {
+            color: #666;
+            font-size: 12px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎭 Emoji Hub</h1>
+        <p>Browse and search through our emoji collection</p>
+    </div>
+    
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/catalog">Emoji Catalog</a>
+    </div>
+    
+    <div class="search-section">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search emojis...">
+        <div id="loadingMessage" class="loading">Loading emojis...</div>
+    </div>
+    
+    <div id="emojiGrid" class="emoji-grid"></div>
+
+    <script>
+        let allEmojis = [];
+
+        async function loadEmojis() {
+            try {
+                const response = await fetch('/api/emojis');
+                allEmojis = await response.json();
+                document.getElementById('loadingMessage').style.display = 'none';
+                displayEmojis(allEmojis);
+            } catch (error) {
+                console.error('Error loading emojis:', error);
+                document.getElementById('loadingMessage').innerHTML = 'Failed to load emojis. Please try again.';
+            }
+        }
+
+        function displayEmojis(emojis) {
+            const grid = document.getElementById('emojiGrid');
+            grid.innerHTML = '';
+            
+            emojis.slice(0, 50).forEach(emoji => {
+                const card = document.createElement('div');
+                card.className = 'emoji-card';
+                card.innerHTML = `
+                    <div class="emoji">${emoji.htmlCode ? emoji.htmlCode.join('') : '🤔'}</div>
+                    <div class="emoji-name">${emoji.name}</div>
+                    <div class="emoji-category">${emoji.category}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function searchEmojis() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (searchTerm === '') {
+                displayEmojis(allEmojis);
+            } else {
+                const filtered = allEmojis.filter(emoji => 
+                    emoji.name.toLowerCase().includes(searchTerm) ||
+                    emoji.category.toLowerCase().includes(searchTerm)
+                );
+                displayEmojis(filtered);
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', searchEmojis);
+        
+        // Load emojis when page loads
+        loadEmojis();
+    </script>
+</body>
+</html>
