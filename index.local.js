@@ -57,6 +57,6 @@ app.get('/api/emojis/category/:category', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Emoji Hub running at http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Emoji Hub running at http://0.0.0.0:${PORT}`);
 });
