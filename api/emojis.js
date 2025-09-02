@@ -1,4 +1,4 @@
-// api/emojis.js
+
 export default async function handler(req, res) {
   try {
     const response = await fetch("https://emojihub.yurace.pro/api/all");
@@ -9,3 +9,6 @@ export default async function handler(req, res) {
     res.status(500).json({ error: "Failed to fetch emojis" });
   }
 }
+
+
+
