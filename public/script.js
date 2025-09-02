@@ -20,6 +20,39 @@ async function loadEmojis() {
     }
 }
 
+// new functions for vercel deployment and search functionality
+
+async function fetchEmojis() {
+  try {
+    const response = await fetch('/api/emojis'); // Updated path
+    const emojis = await response.json();
+    // Process emojis...
+  } catch (error) {
+    console.error('Error fetching emojis:', error);
+  }
+}
+async function fetchEmojisByCategory(category) {
+  try {
+    const response = await fetch(`/api/emojis/category/${category}`); // Updated path
+    const emojis = await response.json();
+    // Process emojis...
+  } catch (error) {
+    console.error('Error fetching emojis by category:', error);
+  }
+}
+async function searchEmojis(query) {
+  try {
+    const response = await fetch(`/api/emojis/search?q=${encodeURIComponent(query)}`); // Updated path
+    const emojis = await response.json();
+    // Process emojis...
+  } catch (error) {
+    console.error('Error searching emojis:', error);
+  }
+}
+
+// end of new functions for vercel deployment and search functionality
+
+
 function setupEventListeners() {
     // Search functionality
     const searchInput = document.getElementById('searchInput');
