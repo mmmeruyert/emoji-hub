@@ -1,40 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Emoji Catalog - Emoji Hub</title>
-  <link rel="stylesheet" href="/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Catalog - Emoji Hub</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="/" class="nav-logo">🎭 Emoji Hub</a>
-      <div class="nav-menu">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/catalog.html" class="nav-link active">Catalog</a>
-      </div>
-    </div>
-  </nav>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">🎭 Emoji Hub</a>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/catalog" class="nav-link active">Catalog</a>
+            </div>
+        </div>
+    </nav>
 
-  <main class="catalog">
-    <div class="search-section">
-      <input type="text" id="searchInput" placeholder="Search emojis..." class="search-input" />
-      <div class="filters">
-        <button class="filter-btn active" data-category="all">All</button>
-        <button class="filter-btn" data-category="smileys">😊 Smileys</button>
-        <button class="filter-btn" data-category="people">👥 People</button>
-        <button class="filter-btn" data-category="animals">🐾 Animals</button>
-        <button class="filter-btn" data-category="food">🍕 Food</button>
-        <button class="filter-btn" data-category="travel">✈️ Travel</button>
-        <button class="filter-btn" data-category="objects">📱 Objects</button>
-      </div>
-    </div>
+    <main class="catalog">
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Search emojis..." class="search-input">
+            <div class="filters">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="smileys">😊 Smileys</button>
+                <button class="filter-btn" data-category="people">👥 People</button>
+                <button class="filter-btn" data-category="animals">🐾 Animals</button>
+                <button class="filter-btn" data-category="food">🍕 Food</button>
+                <button class="filter-btn" data-category="travel">✈️ Travel</button>
+                <button class="filter-btn" data-category="objects">📱 Objects</button>
+            </div>
+        </div>
 
-    <div id="loading" class="loading">Loading amazing emojis...</div>
-    <div id="emojiGrid" class="emoji-grid"></div>
-  </main>
+        <div id="loading" class="loading">Loading amazing emojis...</div>
+        <div id="emojiGrid" class="emoji-grid"></div>
+    </main>
 
-  <script src="/script.js"></script>
+    <script src="/script.js"></script>
 </body>
 </html>
