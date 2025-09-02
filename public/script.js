@@ -8,15 +8,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function loadEmojis() {
-    try {
-        const response = await fetch(`${window.location.origin}/api/emojis`);
-        allEmojis = await response.json();
-        document.getElementById('loading').style.display = 'none';
-        displayEmojis(filterEmojis());
-    } catch (error) {
-        console.error('Error loading emojis:', error);
-        document.getElementById('loading').innerHTML = 'Failed to load emojis. Please try again.';
-    }
+  try {
+    const response = await fetch(`${window.location.origin}/api/emojis`);
+    if (!response.ok) throw new Error('Network response not ok: ' + response.status);
+    allEmojis = await response.json();
+    const loadingEl = document.getElementById('loading');
+    if (loadingEl) loadingEl.style.display = 'none';
+    displayEmojis(filterEmojis());
+  } catch (error) {
+    console.error('Error loading emojis:', error);
+    const loadingEl = document.getElementById('loading');
+    if (loadingEl) loadingEl.innerHTML = 'Failed to load emojis. Please try again.';
+  }
 }
 
 async function searchEmojis(query) {

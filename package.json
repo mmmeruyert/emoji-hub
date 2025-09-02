@@ -1,21 +1,21 @@
 {
-  "name": "nodejs",
+  "name": "emoji-hub",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Emoji Hub - browse, search and copy emojis",
+  "main": "index.local.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.local.js",
+    "dev": "nodemon index.local.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@types/node": "^22.13.11",
     "axios": "^1.11.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0"
-  }
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "license": "ISC"
 }
-

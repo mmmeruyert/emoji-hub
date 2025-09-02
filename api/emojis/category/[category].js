@@ -1,12 +1,14 @@
 // api/emojis/category/[category].js
-import axios from 'axios';
-
-export default async function handler(req, res) {
-  const { category } = req.query;
+module.exports = async (req, res) => {
   try {
-    const response = await axios.get(`https://emojihub.yurace.pro/api/all/category/${category}`);
-    res.status(200).json(response.data);
-  } catch (error) {
+    const category = req.query.category || req.params?.category || '';
+    // upstream has an endpoint /api/all/category/{category}, use it
+    const r = await fetch(`https://emojihub.yurace.pro/api/all/category/${encodeURIComponent(category)}`);
+    const data = await r.json();
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(data);
+  } catch (err) {
+    console.error('api/emojis/category error:', err && err.message ? err.message : err);
     res.status(500).json({ error: 'Category fetch failed' });
   }
-}
+};

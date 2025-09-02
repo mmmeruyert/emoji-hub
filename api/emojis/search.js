@@ -1,15 +1,14 @@
 // api/emojis/search.js
-import axios from 'axios';
-
-export default async function handler(req, res) {
-  const { q } = req.query;
+module.exports = async (req, res) => {
   try {
-    const response = await axios.get('https://emojihub.yurace.pro/api/all');
-    const filtered = response.data.filter(emoji =>
-      emoji.name.toLowerCase().includes(q.toLowerCase())
-    );
+    const q = (req.query.q || '').toString().toLowerCase();
+    const r = await fetch('https://emojihub.yurace.pro/api/all');
+    const data = await r.json();
+    const filtered = data.filter(e => (e.name || '').toLowerCase().includes(q));
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json(filtered);
-  } catch (error) {
+  } catch (err) {
+    console.error('api/emojis/search error:', err && err.message ? err.message : err);
     res.status(500).json({ error: 'Search failed' });
   }
-}
+};
