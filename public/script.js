@@ -1,8 +1,7 @@
-
 let allEmojis = [];
 let currentCategory = 'all';
 
-// Load emojis when page loads
+// Загружаем эмодзи при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     loadEmojis();
     setupEventListeners();
@@ -10,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadEmojis() {
     try {
-        const response = await fetch('/api/emojis'); // Updated path
+        const response = await fetch(`${window.location.origin}/api/emojis`);
         allEmojis = await response.json();
         document.getElementById('loading').style.display = 'none';
         displayEmojis(filterEmojis());
@@ -21,34 +20,33 @@ async function loadEmojis() {
 }
 
 async function searchEmojis(query) {
-  try {
-    const response = await fetch(`/api/emojis/search?q=${encodeURIComponent(query)}`); // Updated path
-    const emojis = await response.json();
-    // Handle searched emojis...
-  } catch (error) {
-    console.error('Error searching emojis:', error);
-  }
+    try {
+        const response = await fetch(`${window.location.origin}/api/emojis/search?q=${encodeURIComponent(query)}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error searching emojis:', error);
+        return [];
+    }
 }
 
 async function fetchEmojisByCategory(category) {
-  try {
-    const response = await fetch(`/api/emojis/category/${category}`); // Updated path
-    const emojis = await response.json();
-    // Handle emojis by category...
-  } catch (error) {
-    console.error('Error fetching emojis by category:', error);
-  }
+    try {
+        const response = await fetch(`${window.location.origin}/api/emojis/category/${category}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching emojis by category:', error);
+        return [];
+    }
 }
 
-
 function setupEventListeners() {
-    // Search functionality
+    // Поиск
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', handleSearch);
     }
 
-    // Filter functionality
+    // Фильтры
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(button => {
         button.addEventListener('click', handleFilter);
@@ -60,87 +58,83 @@ function handleSearch() {
 }
 
 function handleFilter(event) {
-    // Remove active class from all buttons
+    // Убираем active у всех кнопок
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    
-    // Add active class to clicked button
+
+    // Добавляем active на выбранную
     event.target.classList.add('active');
-    
-    // Update current category
+
+    // Обновляем категорию
     currentCategory = event.target.dataset.category;
-    
-    // Display filtered emojis
+
+    // Фильтруем эмодзи
     displayEmojis(filterEmojis());
 }
 
 function filterEmojis() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    
     let filtered = allEmojis;
-    
-    // Filter by category
+
+    // Фильтр по категории
     if (currentCategory !== 'all') {
-        filtered = filtered.filter(emoji => 
+        filtered = filtered.filter(emoji =>
             emoji.category.toLowerCase().includes(currentCategory.toLowerCase())
         );
     }
-    
-    // Filter by search term
+
+    // Фильтр по поиску
     if (searchTerm) {
-        filtered = filtered.filter(emoji => 
+        filtered = filtered.filter(emoji =>
             emoji.name.toLowerCase().includes(searchTerm) ||
             emoji.category.toLowerCase().includes(searchTerm)
         );
     }
-    
+
     return filtered;
 }
 
 function displayEmojis(emojis) {
     const grid = document.getElementById('emojiGrid');
     grid.innerHTML = '';
-    
+
     if (emojis.length === 0) {
         grid.innerHTML = '<div class="no-results">No emojis found 😢</div>';
         return;
     }
-    
+
     emojis.slice(0, 100).forEach(emoji => {
         const card = document.createElement('div');
         card.className = 'emoji-card';
-        
-        // Convert HTML entity codes to actual emoji characters for display
+
+        // Декодируем htmlCode в смайлы
         let displayEmoji = '🤔';
         if (emoji.htmlCode && emoji.htmlCode.length > 0) {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = emoji.htmlCode.join('');
             displayEmoji = tempDiv.textContent || tempDiv.innerText || '🤔';
         }
-        
+
         card.innerHTML = `
             <div class="emoji">${displayEmoji}</div>
             <div class="emoji-name">${emoji.name}</div>
             <div class="emoji-category">${emoji.category}</div>
         `;
-        
-        // Add click to copy functionality
+
+        // Копирование в буфер
         card.addEventListener('click', () => copyEmoji(emoji));
-        
+
         grid.appendChild(card);
     });
 }
 
 function copyEmoji(emoji) {
-    // Convert HTML entity codes to actual emoji characters
-    let emojiText = '🤔'; // fallback emoji
-    
+    let emojiText = '🤔'; // fallback
     if (emoji.htmlCode && emoji.htmlCode.length > 0) {
-        // Convert HTML entities like &#127817; to actual emoji
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = emoji.htmlCode.join('');
         emojiText = tempDiv.textContent || tempDiv.innerText || '🤔';
     }
-    
+
     navigator.clipboard.writeText(emojiText).then(() => {
         showCopyNotification(emojiText);
     }).catch(err => {
@@ -149,18 +143,14 @@ function copyEmoji(emoji) {
 }
 
 function showCopyNotification(emoji) {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = 'copy-notification';
     notification.innerHTML = `${emoji} copied!`;
-    
-    // Add to body
+
     document.body.appendChild(notification);
-    
-    // Trigger animation
+
     setTimeout(() => notification.classList.add('show'), 10);
-    
-    // Remove after 2 seconds
+
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => document.body.removeChild(notification), 300);
